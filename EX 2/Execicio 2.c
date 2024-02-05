@@ -67,7 +67,7 @@ void atender_fila(Fila *fi){
         printf("\nFila Vazia!!");
     }else{
         aux = fi->inicio;
-        printf("Cliente:%d, atendido!", fi->inicio->num);
+        printf("Cliente: %d, atendido!", fi->inicio->num);
         fi->inicio = fi->inicio->prox;
         free(aux);
     }
@@ -93,7 +93,7 @@ int main(){
     int input;
 
     do{
-        printf("\n\nHorario: %d:%d\nFila Atual: %d\n1. Adicionar Cliente\n2. Atender Cliente\n3. Consultar Fila\n4. Encerrar Espediente", hora,min);
+        printf("\n\nHorario: %d:%d\nFila Atual: %d\n1. Adicionar Cliente\n2. Atender Cliente\n3. Consultar Fila\n4. Encerrar Expediente", hora,min);
         printf("\nEscolha uma opcao: ");
         scanf("%d",&input);
         switch (input)
@@ -115,6 +115,7 @@ int main(){
         case 3:
             consulta_fila(fi);
             break;
+
         default:
             break;
         }
