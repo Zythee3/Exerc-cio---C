@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 typedef struct Elemento{
     char ficha;
@@ -22,9 +24,9 @@ Fila* cria_fila(){
     return fila;
 }
 
-void insere_elemento(Fila *fila){
+void Escolha_opcao(Fila *fila){
     Elemento*novo = (Elemento*) malloc(sizeof(Elemento));
-
+    id++;
     char opcao_A = "CNTA";
     char opcao_B = "CRED";
     char opcao_C = "DEBT";  
