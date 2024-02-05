@@ -25,7 +25,9 @@ Fila* cria_fila(){
     return fi;
 }
 
-void insere_elemento(Fila *fi, int *id){
+void adicionar_elemento(Fila *fi, int *id, int *hora, int *min){
+    (*id)++;
+    //Adiciona na fila
     Elemento*novo =(Elemento*) malloc(sizeof(Elemento));
     novo->num = *id;
     novo->prox = NULL;
@@ -36,11 +38,20 @@ void insere_elemento(Fila *fi, int *id){
         fi->fim->prox = novo;
         fi->fim = novo;
     }
+    printf("O cliente numero %d, foi inserido na fila de espera.",*id);
     getch();
+
+    //Ajusta relógio
+    if(*min == 40){
+        (*hora)++;
+        *min = 0;
+    }else{
+        *min += 20;
+    }
 }
 void consulta_fila(Fila *fi){
     if(fi->inicio == NULL){
-        printf("\nFila Vazia!!");
+        printf("\nNão ha clientes na fila. Tente novamente mais tarde!");
     }else{
         aux = fi->inicio;
         do{
@@ -51,12 +62,12 @@ void consulta_fila(Fila *fi){
     getch();
 }	
 
-void remove_elemento_fila(Fila *fi){
+void atender_fila(Fila *fi){
     if(fi->inicio == NULL){
         printf("\nFila Vazia!!");
     }else{
         aux = fi->inicio;
-        printf("%d removido!", fi->inicio->num);
+        printf("Cliente: %d, atendido!", fi->inicio->num);
         fi->inicio = fi->inicio->prox;
         free(aux);
     }
@@ -73,23 +84,8 @@ void esvazia_fila(Fila *fi){
             free(aux);
             aux = fi->inicio;
         }while(aux != NULL);
-        printf("\nFila Esvaziada!!");
     }
     getch();
-}
-
-void adicionarElemento(Fila *fi, int *id, int *hora, int *min){
-    (*id)++;
-    printf("O cliente numero %d, foi inserido na fila de espera.",*id);
-    insere_elemento(fi, id);
-    if(*min == 40){
-        (*hora)++;
-        *min = 0;
-    }else{
-        *min += 20;
-    }
-    
-    printf("voltou");
 }
 
 int main(){
@@ -97,31 +93,29 @@ int main(){
     int input;
 
     do{
-
-        
-        printf("\n\nHorario: %d:%d\nFila Atual: %d\n1. Adicionar Cliente\n2. Atender Cliente\n3. Encerrar Espediente", hora,min);
-        
+        printf("\n\nHorario: %d:%d\nFila Atual: %d\n1. Adicionar Cliente\n2. Atender Cliente\n3. Consultar Fila\n4. Encerrar Expediente", hora,min);
         printf("\nEscolha uma opcao: ");
         scanf("%d",&input);
         switch (input)
-        {
-            
+        {  
         case 1:
-            
-
             if(hora != 19){
-                adicionarElemento(fi, &id, &hora,&min);
+                adicionar_elemento(fi, &id,&hora,&min);
             }
+
             break;
         case 2:
             if (fi->inicio == NULL)
             {
-                printf("Nao ha clientes para ser atendidos.");
+                printf("Nao ha clientes para serem atendidos.");
             }else{
-                remove_elemento_fila(fi);
+                atender_fila(fi);
             }
             break;
-        
+        case 3:
+            consulta_fila(fi);
+            break;
+
         default:
             break;
         }
