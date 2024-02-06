@@ -23,6 +23,17 @@ Fila* cria_fila(){
     }
     return fila;
 }
+void contarElementos(Fila* fi){
+    int contador = 0;
+    Elemento * atual = fi-> inicio;
+    while (atual != NULL)
+    {
+        contador++;
+        atual = atual-> proximo;
+    }
+    return contador;
+
+}
 
 void Escolha_opcao(Fila *fila){
     Elemento*novo = (Elemento*) malloc(sizeof(Elemento));
