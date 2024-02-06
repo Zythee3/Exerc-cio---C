@@ -14,7 +14,7 @@ typedef struct Fila{
 
 
 Elemento *aux;
-int id = 0, hora = 9, min = 0, rest = 30, Haux = 0;
+int id = 0, hora = 9, min = 0, rest = 30, Haux = 0, inic =0;
 
 Fila* cria_fila(){
     Fila* fi = (Fila*) malloc(sizeof(Fila));
@@ -25,9 +25,10 @@ Fila* cria_fila(){
     return fi;
 }
 
-void adicionar_elemento(Fila *fi, int *id, int *hora, int *min, int *rest){
+void adicionar_elemento(Fila *fi, int *id,  int *rest){
     (*id)++;
     (*rest)--;
+    inic = 1;
     //Adiciona na fila
     Elemento*novo =(Elemento*) malloc(sizeof(Elemento));
     novo->num = *id;
@@ -42,13 +43,7 @@ void adicionar_elemento(Fila *fi, int *id, int *hora, int *min, int *rest){
     printf("O cliente numero %d, foi inserido na fila de espera.",*id);
     getch();
 
-    //Ajusta relógio
-    if(*min == 40){
-        (*hora)++;
-        *min = 0;
-    }else{
-        *min += 20;
-    }
+    
 }
 void consulta_fila(Fila *fi){
     if(fi->inicio == NULL){
@@ -63,31 +58,49 @@ void consulta_fila(Fila *fi){
     getch();
 }	
 
-void atender_fila(Fila *fi){
+void atender_fila(Fila *fi, int *hora, int *min){
     if(fi->inicio == NULL){
-        printf("\nFila Vazia!!");
+        printf("\nNao ha clientes na fila. Tente novamente mais tarde!");
     }else{
         aux = fi->inicio;
         printf("Cliente: %d, atendido!", fi->inicio->num);
         fi->inicio = fi->inicio->prox;
         free(aux);
     }
+    //Ajusta relógio
+    if(*min == 40){
+        (*hora)++;
+        *min = 0;
+    }else{
+        *min += 20;
+    }
     getch();
 }
 
 void esvaziar_fila(Fila *fi){
-    if( fi->inicio == NULL ){
-        printf("\n\nNao ha clientes na fila. Tente novamente mais tarde!");
-    }else{
+    if( inic == 0 )
+    {
+        printf("\n\nO expediente ainda nao foi iniciado, portanto nao pode ser finalizado.");
+        getch();
+    }
+    else if ( fi->fim->num < 31)
+    {
+        printf("Ainda existem clientes na fila. Tente novamente com a fila vazia!");
+        getch();
+    }  
+    else
+    {
+        printf("O expediente foi encerrado.");
         aux = fi->inicio;
         do{
             fi->inicio = fi->inicio->prox;
             free(aux);
             aux = fi->inicio;
         }while(aux != NULL);
+        getch();
     }
-    printf("O expediente foi encerrado.");
-    getch();
+    
+    
 }
 
 void horario_ajuste(int hora, int min){
@@ -120,7 +133,7 @@ int main(){
         {  
         case 1:
             if(hora != 19){
-                adicionar_elemento(fi, &id,&hora,&min, &rest);
+                adicionar_elemento(fi,&id, &rest);
             }else{
                 printf("\nO atendimento nao pode ser realizado pois o horario de atendimento foi encerrado (19:00).");
                 getch();
@@ -133,14 +146,14 @@ int main(){
                 printf("\n\nNao ha clientes na fila. Tente novamente mais tarde!");
                 getch();
             }else{
-                atender_fila(fi);
+                atender_fila(fi,&hora, &min);
             }
             break;
         case 3:
             consulta_fila(fi);
             break;
         case 4:
-            esvaziar_fila;
+            esvaziar_fila(fi);
             break;    
 
         default:
